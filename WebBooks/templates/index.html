@@ -1,0 +1,14 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<h1>Главная страница</h1>
+<p>Добро пожаловать в <em>Web-Books</em>, Это учебный сайт, написанный на Django.</p>
+
+<h2>Динамический контент</h2>
+<p>База знаний web-books:</p>
+<ul>
+    <li><strong>Количество книг: </strong>{{ num_books }}</li>
+    <li><strong>Количество авторов: </strong>{{ num_authors }}</li>
+    <li><strong>Количество экземляров книг: </strong>{{ num_instances }}</li>
+    <li><strong>Количество экземпляров книг в заказе: </strong>{{ num_instances_available }}</li>
+</ul>
+{% endblock %}
