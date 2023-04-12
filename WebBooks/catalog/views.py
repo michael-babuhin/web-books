@@ -1,9 +1,11 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse_lazy
 
 from .forms import AuthorsForm
 from .models import Book, Author, BookInstance, Genre
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 def index(request):
@@ -86,3 +88,17 @@ def edit_1(request, id):
         return HttpResponseRedirect("/authors_add/")
     else:
         return render(request, "catalog/edit_1.html", {"author": author})
+    
+class BookCreate(CreateView):
+    model = Book
+    fields = '__all__'
+    success_url = reverse_lazy('books')
+
+class BookUpdate(UpdateView):
+    model = Book
+    fields = '__all__'
+    success_url = reverse_lazy('books')
+
+class BookDelete(DeleteView):
+    model = Book
+    success_url = reverse_lazy('books')

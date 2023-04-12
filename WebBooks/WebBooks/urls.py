@@ -23,13 +23,16 @@ from django.urls import re_path as url
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
-    url('authors_add/', views.authors_add, name='authors_add'),
     path('edit_1/<int:id>/', views.edit_1, name="edit_1"),
     path('create/', views.create, name="create"),
     path('delete/<int:id>/', views.delete, name="delete"),
+    path('accounts/', include('django.contrib.auth.urls')),
     url(r'^books/$', views.BookListView.as_view(), name='books'),
     url(r'^book/(?P<pk>\d+)$', views.BookDetailView.as_view(), name='book-detail'),
     url(r'^authors/$', views.AuthorListView.as_view(), name='authors'),
-    path('accounts/', include('django.contrib.auth.urls')),
     url(r'^mybooks/$', views.LoanedBookByUserListView.as_view(), name='my-borrowed'),
+    url('authors_add/', views.authors_add, name='authors_add'),
+    url(r'book/create/$', views.BookCreate.as_view(), name='book_create'),
+    url(r'book/update/(?P<pk>\d+)$', views.BookUpdate.as_view(), name='book_update'),
+    url(r'book/delete/(?P<pk>\d+)$', views.BookDelete.as_view(), name='book_delete'),
 ]
