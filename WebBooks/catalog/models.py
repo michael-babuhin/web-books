@@ -1,6 +1,14 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from datetime import date
 
+
+@property
+def is_overdue(self):
+    if self.due_back and date.today() > self.due_back:
+        return True
+    return False
 
 #Model of the book genre
 class Genre(models.Model):
@@ -93,15 +101,13 @@ class Status(models.Model):
 #Model Book Copy
 class BookInstance(models.Model):
     book = models.ForeignKey('Book', on_delete=models.CASCADE, null=True)
-    ivn_nom = models.CharField(
-        max_length=20,
-        null=True,
-        help_text="Введите инвентарный экземпляр класса",
-        verbose_name="Инвентарный номер")
-    publisher = models.CharField(
-        max_length=20,
-        help_text="Введите издательство и год выпуска",
-        verbose_name="Издательство")
+    ivn_nom = models.CharField(max_length=20,
+                                null=True,
+                                help_text="Введите инвентарный экземпляр класса",
+                                verbose_name="Инвентарный номер")
+    publisher = models.CharField(max_length=20,
+                                help_text="Введите издательство и год выпуска",
+                                verbose_name="Издательство")
     status = models.ForeignKey('Status',
                                on_delete=models.CASCADE,
                                null=True,
@@ -109,8 +115,15 @@ class BookInstance(models.Model):
                                verbose_name="Статус экземпляра книги")
     due_back = models.DateField(null=True,
                                 blank=True,
-                                help_text="Введите срок конца статуса",
-                                verbose_name="Дата окончания статуса")
+                                help_text='Введите срок конца статуса',
+                                verbose_name='Дата окончания статуса')
+    borrower = models.ForeignKey(User, 
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True,
+                                 verbose_name='Заказчик',
+                                 help_text='Выберите заказчика книги')
+
 
     def __str__(self) -> str:
         return f'{self.ivn_nom} {self.book} {self.status}'
